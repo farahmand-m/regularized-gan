@@ -4,7 +4,12 @@ This repository is an implementation of the NIPS17 paper [Stabilizing Training o
 # Usage
 To apply this technique to your already-existing GAN models remove the **Sigmoid Activation** at the end of your discriminator network and attach the **Regularizer** layer to it which you can find below. This layer takes in the input tensor of the discriminator network along with the output of its last layer (a.k.a. the logits) and returns two tensors which are the activated value of the logits (labels) and the gradient penalties for the corresponding samples.
 
-```
+```python
+from keras.activations import sigmoid
+from keras.backend import gradients, shape, square, reshape
+from tensorflow import norm
+
+
 class Regularizer(Layer):
     def __init__(self, label, **kwargs):
         self.discrimination_label = label
